@@ -1,0 +1,22 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPPeeringPolicy
+metadata:
+  name: control-plane
+spec:
+  nodeSelector:
+    matchLabels:
+      kubernetes.io/hostname: kind-control-plane
+  virtualRouters:
+  - exportPodCIDR: true
+    localASN: 65001
+    neighbors:
+    - connectRetryTimeSeconds: 120
+      eBGPMultihopTTL: 1
+      holdTimeSeconds: 90
+      keepAliveTimeSeconds: 30
+      peerASN: 65000
+      peerAddress: fd00:10:0:1::1/128
+      peerPort: 179
+    serviceSelector:
+      matchLabels:
+        announced: bgp
